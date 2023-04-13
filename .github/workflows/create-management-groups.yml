@@ -38,7 +38,7 @@ jobs:
           inlineScript: |
             Install-Module -Name Az -AllowClobber -Force -Scope CurrentUser -Repository PSGallery -MinimumVersion '9.6.0'
             Import-Module Az -MinimumVersion '9.6.0'
-            Get-AzManagementGroup -GroupName ${{ secrets.TOP_MANAGEMENT_GROUP_ID}} -Expand -Recurse
+            Get-AzManagementGroup -GroupName "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d" -Expand -Recurse
           azPSVersion: "latest"
 
       - shell: pwsh
@@ -59,12 +59,12 @@ jobs:
         with:
           inlineScript: |
             Import-Module Az -MinimumVersion '9.6.0'
-            Get-AzManagementGroup -GroupName ${{ secrets.TOP_MANAGEMENT_GROUP_ID}} -Expand -Recurse
+            Get-AzManagementGroup -GroupName "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d" -Expand -Recurse
           azPSVersion: "latest"
   
   deploy-policy-definitions-and-assignments:
     needs: deploy-management-groups
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
     permissions:
       id-token: write
       contents: read
@@ -82,3 +82,37 @@ jobs:
           Online_MG_Resource_Id: ${{needs.deploy-management-groups.outputs.Online_MG_Resource_Id }}
           Decommisioned_MG_Resource_Id: ${{needs.deploy-management-groups.outputs.Decommisioned_MG_Resource_Id }}
           Sandbox_MG_Resource_Id: ${{needs.deploy-management-groups.outputs.Sandbox_MG_Resource_Id }}
+
+  deploy-custom-RBAC-role-definitions:
+    runs-on: [self-hosted, linux]
+    needs: deploy-policy-definitions-and-assignments
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      rolesSubscriptionOwnerRoleId: ${{ steps.customRbacRoleDefinitions.outputs.outRolesSubscriptionOwnerRoleId }}
+      rolesApplicationOwnerRoleId: ${{ steps.customRbacRoleDefinitions.outputs.outRolesApplicationOwnerRoleId }}
+      rolesNetworkManagementRoleId: ${{ steps.customRbacRoleDefinitions.outputs.outRolesNetworkManagementRoleId }}
+      rolesSecurityOperationsRoleId: ${{ steps.customRbacRoleDefinitions.outputs.outRolesSecurityOperationsRoleId }}
+
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v2
+      
+      - uses: azure/login@v1
+        name: OIDC Login to Customer Tenant
+        with:         
+          tenant-id: ${{ secrets.TENANT_ID }}
+          client-id: ${{ secrets.CLIENT_ID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true
+
+      - uses: azure/arm-deploy@v1 
+        name: Deploy custom RBAC role definitions
+        id: customRbacRoleDefinitions
+        with:
+          scope: managementgroup
+          region: westeurope
+          managementgroupid: "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d"
+          template: modules/customRoleDefinitions/customRoleDefinitions.bicep
+          parameters: modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
