@@ -115,4 +115,6 @@ jobs:
           region: westeurope
           managementgroupid: "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d"
           template: modules/customRoleDefinitions/customRoleDefinitions.bicep
-          parameters: modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
+          parameters: >
+            modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
+            parAssignableScopeManagementGroupId="0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d"
