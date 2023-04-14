@@ -23,3 +23,14 @@ jobs:
           client-id: ${{ secrets.CLIENT_ID }}
           allow-no-subscriptions: true
           enable-AzPSSession: true
+      
+      - shell: pwsh
+        name: Ensure correct Az module is installed
+        run: |
+          if (Get-Module Az -ListAvailable | Where-Object { $_.Version -eq $az_powershell_min_version }) {
+            Write-Output "Az module version $az_powershell_min_version is already installed"
+            Import-Module Az -MinimumVersion $az_powershell_min_version
+          }
+          else {
+              Install-Module -Name Az -AllowClobber -Force -Scope CurrentUser -Repository PSGallery -MinimumVersion $az_powershell_min_version
+          }
