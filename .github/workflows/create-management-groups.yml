@@ -1,8 +1,13 @@
 name: Deploy a subset of management groups using an SPN
+
+env:
+  az_powershell_min_version: {{ vars.AZ_POWERSHELL_MIN_VERSION }}
+
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+
 
 jobs:
   deploy-management-groups:
@@ -33,21 +38,21 @@ jobs:
           allow-no-subscriptions: true
           enable-AzPSSession: true
       
-      - uses: azure/powershell@v1
-        name: Reading all MGs
-        with:
-          inlineScript: |
-            Install-Module -Name Az -AllowClobber -Force -Scope CurrentUser -Repository PSGallery -MinimumVersion '9.6.0'
-            Import-Module Az -MinimumVersion '9.6.0'
-            Get-AzManagementGroup -GroupName "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d" -Expand -Recurse
-          azPSVersion: "latest"
-
+      - shell: pwsh
+        name: Ensure correct Az module is installed
+        run: |
+          if (Get-Module Az -ListAvailable | Where-Object { $_.Version -eq $az_powershell_min_version }) {
+            Write-Output "Az module version $az_powershell_min_version is already installed"
+            Import-Module Az -MinimumVersion $az_powershell_min_version
+          }
+          else {
+              Install-Module -Name Az -AllowClobber -Force -Scope CurrentUser -Repository PSGallery -MinimumVersion $az_powershell_min_version
+          }
+          
       - shell: pwsh
         name: Processing Subscriptions and Management Groups
         id: managementGroups
         run: |
-          Get-Module Az -ListAvailable
-          Import-Module Az -MinimumVersion '9.6.0'
           ./process-management-groups-structure.ps1
       
       - shell: pwsh
@@ -59,7 +64,7 @@ jobs:
         name: Re-Reading all MGs
         with:
           inlineScript: |
-            Import-Module Az -MinimumVersion '9.6.0'
+            Import-Module Az -MinimumVersion $az_powershell_min_version
             Get-AzManagementGroup -GroupName "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d" -Expand -Recurse
           azPSVersion: "latest"
   
