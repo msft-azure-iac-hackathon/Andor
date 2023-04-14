@@ -10,11 +10,14 @@ on:
 jobs:
   deploy-management-groups:
     runs-on: [self-hosted, linux]
+    
     env:
       az_powershell_min_version: ${{ inputs.az_powershell_min_version }}
+
     permissions:
       id-token: write
       contents: read
+
     steps:
       - uses: actions/checkout@v2
 
@@ -58,3 +61,15 @@ jobs:
             $TopManagementGroupId = $TopManagementGroupResourceId.split("/")[-1]
             Get-AzManagementGroup -GroupName $TopManagementGroupId -Expand -Recurse
           azPSVersion: "latest"
+
+    outputs:
+          Andor_MG_Resource_Id: ${{ steps.managementGroups.outputs.Andor_MG_Resource_Id }}
+          Platform_MG_Resource_Id: ${{ steps.managementGroups.outputs.Platform_MG_Resource_Id }}
+          Connectivity_MG_Resource_Id: ${{ steps.managementGroups.outputs.Connectivity_MG_Resource_Id }}
+          Identity_MG_Resource_Id: ${{ steps.managementGroups.outputs.Identity_MG_Resource_Id }}
+          Management_MG_Resource_Id: ${{ steps.managementGroups.outputs.Management_MG_Resource_Id }}
+          Landing_Zones_MG_Resource_Id: ${{ steps.managementGroups.outputs.Landing_Zones_MG_Resource_Id }}
+          Corp_MG_Resource_Id: ${{ steps.managementGroups.outputs.Corp_MG_Resource_Id }}
+          Online_MG_Resource_Id: ${{ steps.managementGroups.outputs.Online_MG_Resource_Id }}
+          Decommisioned_MG_Resource_Id: ${{ steps.managementGroups.outputs.Decommisioned_MG_Resource_Id }}
+          Sandbox_MG_Resource_Id: ${{ steps.managementGroups.outputs.Sandbox_MG_Resource_Id }}
