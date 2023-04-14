@@ -57,4 +57,5 @@ if ($null -ne $TopManagementGroupId) {
 }
 
 
+Write-Output "top_management_group_id=$($TopManagementGroup.Name)" >> $Env:GITHUB_OUTPUT
 Get-Content $Env:GITHUB_OUTPUT
