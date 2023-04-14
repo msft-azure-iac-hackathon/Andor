@@ -4,8 +4,6 @@ env:
   az_powershell_min_version: '9.6.0'
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 
