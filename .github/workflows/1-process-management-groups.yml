@@ -36,7 +36,10 @@ on:
         value: ${{ jobs.deploy-management-groups.outputs.Decommisioned_MG_Resource_Id }}
       Sandbox_MG_Resource_Id:
         description: 'Resource ID of the Sandbox Management Group'
-        value: ${{ jobs.deploy-management-groups.outputs.Sandbox_MG_Resource_Id }}      
+        value: ${{ jobs.deploy-management-groups.outputs.Sandbox_MG_Resource_Id }}
+      Top_Management_Group_Id:
+        description: 'ID of the Highest Management Group'
+        value: ${{ jobs.deploy-management-groups.outputs.Top_MG_Id }}
 
 jobs:
   deploy-management-groups:
@@ -76,7 +79,7 @@ jobs:
         name: Processing Subscriptions and Management Groups
         id: managementGroups
         run: |
-          ./modules/managementGroups/process-management-groups-structure.ps1
+          ./modules/managementprocess-management-groups-structure.ps1
       
       - shell: pwsh
         name: Reading environment variables
@@ -86,14 +89,17 @@ jobs:
       
       - uses: azure/powershell@v1
         name: Re-Reading all MGs
+        id: TopView
         with:
           inlineScript: |
             $TopManagementGroupResourceId = "${{ steps.managementGroups.outputs.Andor_MG_Resource_Id }}"
             $TopManagementGroupId = $TopManagementGroupResourceId.split("/")[-1]
+            Write-Output "top_management_group_id=$top_management_group_id" >> $Env:GITHUB_OUTPUT
             Get-AzManagementGroup -GroupName $TopManagementGroupId -Expand -Recurse
           azPSVersion: "latest"
 
     outputs:
+          Top_MG_Id: ${{ steps.TopView.outputs.TopView.top_management_group_id }}
           Andor_MG_Resource_Id: ${{ steps.managementGroups.outputs.Andor_MG_Resource_Id }}
           Platform_MG_Resource_Id: ${{ steps.managementGroups.outputs.Platform_MG_Resource_Id }}
           Connectivity_MG_Resource_Id: ${{ steps.managementGroups.outputs.Connectivity_MG_Resource_Id }}

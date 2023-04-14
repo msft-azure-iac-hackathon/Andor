@@ -3,37 +3,7 @@ name: Process Custom RBAC role definitions
 on:
   workflow_call:
     inputs:
-      az_powershell_min_version:
-        required: true
-        type: string
-      Andor_MG_Resource_Id:
-        required: true
-        type: string
-      Platform_MG_Resource_Id:
-        required: true
-        type: string
-      Connectivity_MG_Resource_Id:
-        required: true
-        type: string
-      Identity_MG_Resource_Id:
-        required: true
-        type: string
-      Management_MG_Resource_Id:
-        required: true
-        type: string
-      Landing_Zones_MG_Resource_Id:
-        required: true
-        type: string
-      Corp_MG_Resource_Id:
-        required: true
-        type: string
-      Online_MG_Resource_Id:
-        required: true
-        type: string
-      Decommisioned_MG_Resource_Id:
-        required: true
-        type: string
-      Sandbox_MG_Resource_Id:
+      Top_Management_Group_Id:
         required: true
         type: string
 
@@ -42,8 +12,7 @@ jobs:
     runs-on: [self-hosted, linux]
 
     env:
-      az_powershell_min_version: ${{ inputs.az_powershell_min_version }}
-      top_management_resource_group_id: ${{ inputs.Andor_MG_Resource_Id }}
+      top_management_group_Id: ${{ inputs.Top_Management_Group_Id }}
     
     permissions:
       id-token: write
@@ -59,15 +28,15 @@ jobs:
           client-id: ${{ secrets.CLIENT_ID }}
           allow-no-subscriptions: true
           enable-AzPSSession: true
-      
+
       - uses: azure/arm-deploy@v1 
         name: Deploy custom RBAC role definitions
         id: customRbacRoleDefinitions
         with:
           scope: managementgroup
           region: westeurope
-          managementgroupid: $top_management_resource_group_id
+          managementgroupid: $top_management_group_Id
           template: modules/customRoleDefinitions/customRoleDefinitions.bicep
           parameters: >
             modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
-            parAssignableScopeManagementGroupId=$top_management_resource_group_id
+            parAssignableScopeManagementGroupId=$top_management_group_Id
