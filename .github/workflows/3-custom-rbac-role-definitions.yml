@@ -10,9 +10,6 @@ on:
 jobs:
   deploy-custom-rbac-role-definitions:
     runs-on: [self-hosted, linux]
-
-    env:
-      top_management_group_Id: ${{ inputs.Top_Management_Group_Id }}
     
     permissions:
       id-token: write
@@ -35,8 +32,8 @@ jobs:
         with:
           scope: managementgroup
           region: westeurope
-          managementgroupid: $top_management_group_Id
+          managementgroupid: ${{ inputs.Top_Management_Group_Id }}
           template: modules/customRoleDefinitions/customRoleDefinitions.bicep
           parameters: >
             modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
-            parAssignableScopeManagementGroupId=$top_management_group_Id
+            parAssignableScopeManagementGroupId=${{ inputs.Top_Management_Group_Id }}
