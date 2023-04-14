@@ -10,6 +10,8 @@ on:
 jobs:
   deploy-management-groups:
     runs-on: [self-hosted, linux]
+    env:
+      az_powershell_min_version: ${{ inputs.az_powershell_min_version }}
     permissions:
       id-token: write
       contents: read
@@ -28,9 +30,10 @@ jobs:
         name: Ensure correct Az module is installed
         run: |
           if (Get-Module Az -ListAvailable | Where-Object { $_.Version -eq $az_powershell_min_version }) {
-            Write-Output "Az module version $az_powershell_min_version is already installed"
+            Write-Host "Az module version $az_powershell_min_version is already installed"
             Import-Module Az -MinimumVersion $az_powershell_min_version
           }
           else {
+              Write-Host "Az module version $az_powershell_min_version is going to be installed"
               Install-Module -Name Az -AllowClobber -Force -Scope CurrentUser -Repository PSGallery -MinimumVersion $az_powershell_min_version
           }
