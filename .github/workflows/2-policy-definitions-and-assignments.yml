@@ -43,6 +43,7 @@ jobs:
 
     env:
       az_powershell_min_version: ${{ inputs.az_powershell_min_version }}
+      top_management_resource_group_id: ${{ inputs.Andor_MG_Resource_Id }}
     
     permissions:
       id-token: write
@@ -58,3 +59,5 @@ jobs:
           client-id: ${{ secrets.CLIENT_ID }}
           allow-no-subscriptions: true
           enable-AzPSSession: true
+      
+      - run: echo "Top Management Group ID $top_management_resource_group_id"
