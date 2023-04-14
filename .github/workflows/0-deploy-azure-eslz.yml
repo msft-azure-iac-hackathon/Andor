@@ -4,7 +4,7 @@ on:
       branches: [ main ]
   workflow_dispatch:
 env:
-  az_powershell_min_version: '9.6.0'
+  az_powershell_min_version: "9.6.0"
 
 jobs:
   process-management-groups:
