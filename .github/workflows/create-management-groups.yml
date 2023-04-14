@@ -120,3 +120,46 @@ jobs:
           parameters: >
             modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
             parAssignableScopeManagementGroupId=${{needs.deploy-management-groups.outputs.Andor_MG_Resource_Id }}
+
+  deploy-logging:
+    runs-on: [self-hosted, linux]
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      resourceGroupNameLogging: ${{ steps.resourceGroupLogging.outputs.resourceGroupName }}
+      workspaceId: ${{ steps.logging.outputs.outLogAnalyticsWorkspaceId }}
+      workspaceName: ${{ steps.logging.outputs.outLogAnalyticsWorkspaceName }}
+      laCustomerId: ${{ steps.logging.outputs.outLogAnalyticsCustomerId }}
+      laSolutions: ${{ steps.logging.outputs.outLogAnalyticsSolutions }}
+      automationAccountName: ${{ steps.logging.outputs.outAutomationAccountName }}
+      automationAccountId: ${{ steps.logging.outputs.outAutomationAccountId }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: azure/login@v1
+        name: Azure OIDC login
+        with:         
+          tenant-id: ${{ secrets.TENANT_ID }}
+          client-id: ${{ secrets.CLIENT_ID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true
+      
+      - uses: azure/arm-deploy@v1
+        name: Create the Resource Group for logging
+        id: resourceGroupLogging
+        with:
+          scope: subscription
+          region: westeurope
+          subscriptionId: "FillinherethesubscriptionID"
+          template: ARMtemplates/resourcGroup.json
+          parameters: modules/logging/parameters/resourceGroup.parameters.json
+      
+      - uses: azure/arm-deploy@v1
+        name: Create the Log Analytics Workspace
+        id: logging
+        with:
+          template: modules/logging/logging.bicep
+          parameters: modules/logging/parameters/logging.parameters.all.json
+          resourceGroupName: ${{ steps.resourceGroupLogging.outputs.resourceGroupName }}
