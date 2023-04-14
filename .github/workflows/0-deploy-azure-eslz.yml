@@ -32,18 +32,8 @@ jobs:
   custom-rbac-role-definitions:
     uses: ./.github/workflows/3-custom-rbac-role-definitions.yml
     needs: process-management-groups
-    with: 
-      az_powershell_min_version: '9.6.0'
-      Andor_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Andor_MG_Resource_Id }}
-      Platform_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Platform_MG_Resource_Id }}
-      Connectivity_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Connectivity_MG_Resource_Id }}
-      Identity_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Identity_MG_Resource_Id }}
-      Management_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Management_MG_Resource_Id }}
-      Landing_Zones_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Landing_Zones_MG_Resource_Id }}
-      Corp_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Corp_MG_Resource_Id }}
-      Online_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Online_MG_Resource_Id }}
-      Decommisioned_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Decommisioned_MG_Resource_Id }}
-      Sandbox_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Sandbox_MG_Resource_Id }}
+    with:
+      Top_Management_Group_Id: ${{ needs.process-management-groups.outputs.Top_Management_Group_Id }}
     secrets: inherit
 
 
