@@ -58,13 +58,7 @@ jobs:
         run: |
           Get-ChildItem env: | fl
           
-      - uses: azure/powershell@v1
-        name: Re-Reading all MGs
-        with:
-          inlineScript: |
-            Import-Module Az -MinimumVersion $az_powershell_min_version
-            Get-AzManagementGroup -GroupName "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d" -Expand -Recurse
-          azPSVersion: "latest"
+      
   
   deploy-policy-definitions-and-assignments:
     needs: deploy-management-groups
