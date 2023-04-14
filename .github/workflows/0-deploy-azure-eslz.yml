@@ -11,3 +11,4 @@ jobs:
     uses: ./.github/workflows/1-process-management-groups.yml
     with: 
       az_powershell_min_version: '9.6.0'
+    secrets: inherit
