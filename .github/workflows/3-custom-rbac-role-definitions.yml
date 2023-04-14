@@ -36,4 +36,4 @@ jobs:
           template: modules/customRoleDefinitions/customRoleDefinitions.bicep
           parameters: >
             modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
-            parAssignableScopeManagementGroupId=${{ inputs.Top_Management_Group_Id }}
+            parAssignableScopeManagementGroupId="${{ inputs.Top_Management_Group_Id }}"
