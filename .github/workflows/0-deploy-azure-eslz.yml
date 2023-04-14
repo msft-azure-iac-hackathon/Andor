@@ -9,14 +9,14 @@ jobs:
   process-management-groups:
     uses: ./.github/workflows/1-process-management-groups.yml
     with: 
-      az_powershell_min_version: '9.6.0'
+      az_powershell_min_version: ${{ vars.AZ_POWERSHELL_MIN_VERSION }}"
     secrets: inherit
 
   policy-definitions-and-assignments:
     uses: ./.github/workflows/2-policy-definitions-and-assignments.yml
     needs: process-management-groups
     with: 
-      az_powershell_min_version: '9.6.0'
+      az_powershell_min_version: ${{ vars.AZ_POWERSHELL_MIN_VERSION }}"
       Andor_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Andor_MG_Resource_Id }}
       Platform_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Platform_MG_Resource_Id }}
       Connectivity_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Connectivity_MG_Resource_Id }}
