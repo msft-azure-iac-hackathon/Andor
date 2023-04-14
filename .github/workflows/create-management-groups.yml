@@ -1,7 +1,7 @@
 name: Deploy a subset of management groups using an SPN
 
 env:
-  az_powershell_min_version: {{ vars.AZ_POWERSHELL_MIN_VERSION }}
+  az_powershell_min_version: '9.6.0'
 
 on:
   push:
