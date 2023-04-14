@@ -37,3 +37,22 @@ jobs:
               Write-Host "Az module version $env:az_powershell_min_version is going to be installed"
               Install-Module -Name Az -AllowClobber -Force -Scope CurrentUser -Repository PSGallery -MinimumVersion $env:az_powershell_min_version
           }
+      
+      - shell: pwsh
+        name: Processing Subscriptions and Management Groups
+        id: managementGroups
+        run: |
+          ./process-management-groups-structure.ps1
+      
+      - shell: pwsh
+        name: Reading environment variables
+        run: |
+          Get-ChildItem env: | fl
+      
+      - uses: azure/powershell@v1
+        name: Re-Reading all MGs
+        with:
+          inlineScript: |
+            Import-Module Az -MinimumVersion $az_powershell_min_version
+            Get-AzManagementGroup -GroupName "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d" -Expand -Recurse
+          azPSVersion: "latest"
