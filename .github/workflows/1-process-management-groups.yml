@@ -99,7 +99,7 @@ jobs:
           azPSVersion: "latest"
 
     outputs:
-          Top_MG_Id: ${{ steps.TopView.outputs.TopView.top_management_group_id }}
+          Top_MG_Id: ${{ steps.TopView.outputs.top_management_group_id }}
           Andor_MG_Resource_Id: ${{ steps.managementGroups.outputs.Andor_MG_Resource_Id }}
           Platform_MG_Resource_Id: ${{ steps.managementGroups.outputs.Platform_MG_Resource_Id }}
           Connectivity_MG_Resource_Id: ${{ steps.managementGroups.outputs.Connectivity_MG_Resource_Id }}
