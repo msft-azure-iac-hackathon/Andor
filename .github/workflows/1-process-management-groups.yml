@@ -54,6 +54,7 @@ jobs:
         name: Re-Reading all MGs
         with:
           inlineScript: |
-            echo ${{ steps.managementGroups.outputs.Andor_MG_Resource_Id }}
-            Get-AzManagementGroup -GroupName "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d" -Expand -Recurse
+            $TopManagementGroupResourceId = ${{ steps.managementGroups.outputs.Andor_MG_Resource_Id }}
+            $TopManagementGroupId = $TopManagementGroupResourceId.split("/")[-1]
+            Get-AzManagementGroup -GroupName $TopManagementGroupId -Expand -Recurse
           azPSVersion: "latest"
