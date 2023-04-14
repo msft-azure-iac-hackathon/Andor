@@ -1,0 +1,11 @@
+name: Deploy Azure Enterprise Scale Landing Zone
+on:
+  push:
+      branches: [ main ]
+  workflow_dispatch:
+env:
+  az_powershell_min_version: '9.6.0'
+
+jobs:
+  process-management-groups:
+    uses: ./.github/workflows/1-process-management-groups.yml
