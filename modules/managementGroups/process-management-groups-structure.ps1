@@ -1,4 +1,4 @@
-$Structure = ConvertFrom-Json -InputObject (Get-Content -Path .\management-groups-structure.json -Raw)
+$Structure = ConvertFrom-Json -InputObject (Get-Content -Path "./modules/managementGroups/management-groups-structure.json" -Raw)
 $Structure
 
 function createUpdateMG ($mg, $parentId) {
