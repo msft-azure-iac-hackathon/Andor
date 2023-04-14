@@ -11,6 +11,7 @@ jobs:
       id-token: write
       contents: read
     outputs:
+      Andor_MG_Resource_Id: ${{ steps.managementGroups.outputs.Andor_MG_Resource_Id }}
       Platform_MG_Resource_Id: ${{ steps.managementGroups.outputs.Platform_MG_Resource_Id }}
       Connectivity_MG_Resource_Id: ${{ steps.managementGroups.outputs.Connectivity_MG_Resource_Id }}
       Identity_MG_Resource_Id: ${{ steps.managementGroups.outputs.Identity_MG_Resource_Id }}
@@ -23,7 +24,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      
+
       - uses: azure/login@v1
         name: Azure OIDC login
         with:         
@@ -71,8 +72,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: echo "Platform_MG_Resource_Id $Platform_MG_Resource_Id"
+      - run: echo "Top Management Group ID $Andor_MG_Resource_Id"
         env:
+          Andor_MG_Resource_Id: ${{needs.deploy-management-groups.outputs.Andor_MG_Resource_Id }}
           Platform_MG_Resource_Id: ${{needs.deploy-management-groups.outputs.Platform_MG_Resource_Id }}
           Connectivity_MG_Resource_Id: ${{needs.deploy-management-groups.outputs.Connectivity_MG_Resource_Id }}
           Identity_MG_Resource_Id: ${{needs.deploy-management-groups.outputs.Identity_MG_Resource_Id }}
@@ -113,51 +115,8 @@ jobs:
         with:
           scope: managementgroup
           region: westeurope
-          managementgroupid: "0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d"
+          managementgroupid: ${{needs.deploy-management-groups.outputs.Andor_MG_Resource_Id }}
           template: modules/customRoleDefinitions/customRoleDefinitions.bicep
           parameters: >
             modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
-            parAssignableScopeManagementGroupId="0f4c021a-50f9-4e85-9bd8-fc83a10f3b1d"
-
-  deploy-logging:
-    runs-on: [self-hosted, linux]
-    permissions:
-      contents: read
-      id-token: write
-    outputs:
-      resourceGroupNameLogging: ${{ steps.resourceGroupLogging.outputs.resourceGroupName }}
-      workspaceId: ${{ steps.logging.outputs.outLogAnalyticsWorkspaceId }}
-      workspaceName: ${{ steps.logging.outputs.outLogAnalyticsWorkspaceName }}
-      laCustomerId: ${{ steps.logging.outputs.outLogAnalyticsCustomerId }}
-      laSolutions: ${{ steps.logging.outputs.outLogAnalyticsSolutions }}
-      automationAccountName: ${{ steps.logging.outputs.outAutomationAccountName }}
-      automationAccountId: ${{ steps.logging.outputs.outAutomationAccountId }}
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: azure/login@v1
-        name: Azure OIDC login
-        with:         
-          tenant-id: ${{ secrets.TENANT_ID }}
-          client-id: ${{ secrets.CLIENT_ID }}
-          allow-no-subscriptions: true
-          enable-AzPSSession: true
-      
-      - uses: azure/arm-deploy@v1
-        name: Create the Resource Group for logging
-        id: resourceGroupLogging
-        with:
-          scope: subscription
-          region: westeurope
-          subscriptionId: "FillinherethesubscriptionID"
-          template: ARMtemplates/resourcGroup.json
-          parameters: modules/logging/parameters/resourceGroup.parameters.json
-      
-      - uses: azure/arm-deploy@v1
-        name: Create the Log Analytics Workspace
-        id: logging
-        with:
-          template: modules/logging/logging.bicep
-          parameters: modules/logging/parameters/logging.parameters.all.json
-          resourceGroupName: ${{ steps.resourceGroupLogging.outputs.resourceGroupName }}
+            parAssignableScopeManagementGroupId=${{needs.deploy-management-groups.outputs.Andor_MG_Resource_Id }}
