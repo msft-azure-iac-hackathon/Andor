@@ -33,7 +33,7 @@ jobs:
           scope: managementgroup
           region: westeurope
           managementgroupid: ${{ inputs.Top_Management_Group_Id }}
-          template: modules/customRoleDefinitions/customRoleDefinitions.bicep
+          template: orchestration\mgDiagSettingsAll\mgDiagSettingsAll.bicep
           parameters: >
-            modules/customRoleDefinitions/parameters/customRoleDefinitions.parameters.all.json
-            parAssignableScopeManagementGroupId="${{ inputs.Top_Management_Group_Id }}"
+            orchestration\mgDiagSettingsAll\parameters\mgDiagSettingsAll.parameters.all.json
+            parLogAnalyticsWorkspaceResourceId="${{ inputs.Top_Management_Group_Id }}"
