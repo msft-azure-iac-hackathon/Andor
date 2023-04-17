@@ -44,24 +44,24 @@ jobs:
       Subscription_Id: '5100271a-e3c3-4311-a839-c6d8f9b40daa'
     secrets: inherit
 
-  policy-assignments:
-    uses: ./.github/workflows/10-policy-assignments.yml
-    needs: [process-management-groups, policy-definitions, deploy-logging]
-    with: 
-      Andor_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Andor_MG_Resource_Id }}
-      Platform_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Platform_MG_Resource_Id }}
-      Connectivity_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Connectivity_MG_Resource_Id }}
-      Identity_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Identity_MG_Resource_Id }}
-      Management_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Management_MG_Resource_Id }}
-      Landing_Zones_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Landing_Zones_MG_Resource_Id }}
-      Corp_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Corp_MG_Resource_Id }}
-      Online_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Online_MG_Resource_Id }}
-      Decommisioned_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Decommisioned_MG_Resource_Id }}
-      Sandbox_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Sandbox_MG_Resource_Id }}
-      LogAnalytics_Workspace_Id: ${{needs.deploy-logging.outputs.outLogAnalyticsWorkspaceId}}
-      #LogAnalytics_Customer_Id: ${{needs.deploy-logging.outputs.outLogAnalyticsCustomerId}}
-      #LogAnalytics_Solutions: ${{needs.deploy-logging.outputs.outLogAnalyticsSolutions}}
-      #Automation_Account_Id: ${{needs.deploy-logging.outputs.outAutomationAccount.id}}
-      Automation_Account_Name: ${{needs.deploy-logging.outputs.outAutomationAccount.name}}
-    secrets: inherit
+  #policy-assignments:
+  #  uses: ./.github/workflows/10-policy-assignments.yml
+  #  needs: [process-management-groups, policy-definitions, deploy-logging]
+  #  with: 
+  #    Andor_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Andor_MG_Resource_Id }}
+  #    Platform_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Platform_MG_Resource_Id }}
+  #   Connectivity_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Connectivity_MG_Resource_Id }}
+  #    Identity_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Identity_MG_Resource_Id }}
+  #    Management_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Management_MG_Resource_Id }}
+  #    Landing_Zones_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Landing_Zones_MG_Resource_Id }}
+  #    Corp_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Corp_MG_Resource_Id }}
+  #    Online_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Online_MG_Resource_Id }}
+  #    Decommisioned_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Decommisioned_MG_Resource_Id }}
+  #    Sandbox_MG_Resource_Id: ${{ needs.process-management-groups.outputs.Sandbox_MG_Resource_Id }}
+  #    LogAnalytics_Workspace_Id: ${{needs.deploy-logging.outputs.outLogAnalyticsWorkspaceId}}
+  #    #LogAnalytics_Customer_Id: ${{needs.deploy-logging.outputs.outLogAnalyticsCustomerId}}
+  #    #LogAnalytics_Solutions: ${{needs.deploy-logging.outputs.outLogAnalyticsSolutions}}
+  #    #Automation_Account_Id: ${{needs.deploy-logging.outputs.outAutomationAccount.id}}
+  #    Automation_Account_Name: ${{needs.deploy-logging.outputs.outAutomationAccount.name}}
+  #  secrets: inherit
 
