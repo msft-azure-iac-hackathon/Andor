@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  deploy-custom-rbac-role-definitions:
+  deploy-central-logging:
     runs-on: [self-hosted, linux]
     
     permissions:
@@ -36,4 +36,12 @@ jobs:
           template: ARMtemplates/resourceGroup.json
           parameters: modules/logging/parameters/resourceGroup.parameters.json
 
-      
+      - uses: azure/arm-deploy@v1 
+        name: Deploy logging
+        id: deployCentralLogging
+        with:
+          scope: resourcegroup
+          region: westeurope
+          resourcegroupid: ${{ steps.resourceGroupLogging.outputs.resourceGroupName }}
+          template: modules/logging/Logging.bicep
+          parameters: modules/logging/logging.parameters.all.json
