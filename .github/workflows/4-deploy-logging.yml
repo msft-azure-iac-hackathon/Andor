@@ -43,5 +43,7 @@ jobs:
           scope: resourcegroup
           region: westeurope
           resourceGroupName: ${{ steps.resourceGroupLogging.outputs.resourceGroupName }}
-          template: modules/logging/Logging.bicep
-          parameters: modules/logging/logging.parameters.all.json
+          template: modules/logging/logging.bicep
+          parameters: >
+            modules/logging/logging.parameters.all.json
+            parLogAnalyticsWorkspaceName="andor-log-analytics"

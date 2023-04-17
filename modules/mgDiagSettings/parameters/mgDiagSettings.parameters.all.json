@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+      "parLogAnalyticsWorkspaceResourceId": {
+      "value": "/subscriptions/f949745b-4c42-45c4-80bc-ab2d4a31dff7/resourceGroups/rg-alz-logging-001/providers/Microsoft.OperationalInsights/workspaces/alz-log-analytics"
+    },
+    "parTelemetryOptOut": {
+      "value": false
+    }
+  }
+}
