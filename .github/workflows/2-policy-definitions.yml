@@ -6,6 +6,9 @@ on:
       az_powershell_min_version:
         required: true
         type: string
+      Top_MG_Id: 
+        required: true
+        type: string
       Andor_MG_Resource_Id:
         required: true
         type: string
@@ -67,8 +70,8 @@ jobs:
         with:
           scope: managementgroup
           region: westeurope
-          managementgroupid: ${{ inputs.Andor_MG_Resource_Id }}
+          managementgroupid: ${{ inputs.Top_MG_Id }}
           template: modules/policy/definitions/customPolicyDefinitions.bicep
           parameters: >
             modules/policy/definitions/parameters/customPolicyDefinitions.parameters.all.json
-            parTargetManagementGroupId="${{ inputs.Andor_MG_Resource_Id }}"
+            parTargetManagementGroupId="${{ inputs.Top_MG_Id }}"
