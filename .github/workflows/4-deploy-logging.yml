@@ -45,5 +45,5 @@ jobs:
           resourceGroupName: ${{ steps.resourceGroupLogging.outputs.resourceGroupName }}
           template: modules/logging/logging.bicep
           parameters: >
-            modules/logging/logging.parameters.all.json
+            modules/logging/parameters/logging.parameters.all.json
             parLogAnalyticsWorkspaceName="andor-log-analytics"
