@@ -6,6 +6,33 @@ on:
       Top_Management_Group_Id:
         required: true
         type: string
+      Platform_MG_Resource_Id:
+        required: true
+        type: string
+      Connectivity_MG_Resource_Id:
+        required: true
+        type: string
+      Identity_MG_Resource_Id:
+        required: true
+        type: string
+      Management_MG_Resource_Id:
+        required: true
+        type: string
+      Landing_Zones_MG_Resource_Id:
+        required: true
+        type: string
+      Corp_MG_Resource_Id:
+        required: true
+        type: string
+      Online_MG_Resource_Id:
+        required: true
+        type: string
+      Decommisioned_MG_Resource_Id:
+        required: true
+        type: string
+      Sandbox_MG_Resource_Id:
+        required: true
+        type: string
 
 jobs:
   deploy-diagnostic-settings:
@@ -37,3 +64,13 @@ jobs:
           parameters: >
             orchestration\mgDiagSettingsAll\parameters\mgDiagSettingsAll.parameters.all.json
             parLogAnalyticsWorkspaceResourceId="${{ inputs.Top_Management_Group_Id }}"
+            Top_MG_Resource_Id="${{ inputs.Top_MG_Resource_Id }}"
+            Platform_MG_Resource_Id="${{ inputs.Platform_MG_Resource_Id }}"
+            Connectivity_MG_Resource_Id="${{ inputs.Connectivity_MG_Resource_Id }}"
+            Identity_MG_Resource_Id="${{ inputs.Identity_MG_Resource_Id }}"
+            Management_MG_Resource_Id="${{ inputs.Management_MG_Resource_Id }}"
+            Landing_Zones_MG_Resource_Id="${{ inputs.Landing_Zones_MG_Resource_Id }}"
+            Corp_MG_Resource_Id="${{ inputs.Corp_MG_Resource_Id }}"
+            Online_MG_Resource_Id="${{ inputs.Online_MG_Resource_Id }}"
+            Decommisioned_MG_Resource_Id="${{ inputs.Decommisioned_MG_Resource_Id }}"
+            Sandbox_MG_Resource_Id="${{ inputs.Sandbox_MG_Resource_Id }}"
