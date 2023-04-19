@@ -44,6 +44,13 @@ jobs:
       Subscription_Id: '5100271a-e3c3-4311-a839-c6d8f9b40daa'
     secrets: inherit
 
+  diagnostic-settings:
+    uses: ./.github/workflows/5-diagnostic-settings.yml
+    needs: [process-management-groups, deploy-logging]
+    with:
+      Top_Management_Group_Id: ${{ needs.process-management-groups.outputs.Top_Management_Group_Id }}
+    secrets: inherit
+
   #policy-assignments:
   #  uses: ./.github/workflows/10-policy-assignments.yml
   #  needs: [process-management-groups, policy-definitions, deploy-logging]
